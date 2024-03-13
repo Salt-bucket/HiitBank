@@ -1,10 +1,11 @@
 import _md5
+import hashlib
 from time import time
 import random
 
 class Account:
 
-    def __init__(self, fname, lname, passcode, email, pin, bvn):
+    def __init__(self, fname=None, lname=None, passcode=None, email=None, pin=None, bvn=None):
         self.__fname = fname
         self.__lname = lname
         self.__phone_no = None
@@ -15,11 +16,10 @@ class Account:
         self.__balance = 0.0
 
         if bvn == None:
-            self.bvn = str(random.randint(10000000000,99999999999))
+            self.__bvn = str(random.randint(10000000000,99999999999))
         else:
-            self.bvn = bvn
+            self.__bvn = bvn
 
-        self.__bvn = bvn
         self.__account_no = "888" + str(random.randint(1000000,9999999))
         self.__nin: str = None
 
@@ -60,7 +60,7 @@ class Account:
     def set_passcode(self, new_passcode: str):
         assert type(new_passcode) == str, "New passcode provided is not a string"
 
-        self.__passcode = _md5.md5(new_passcode)
+        self.__passcode = hashlib.md5(new_passcode.encode("utf-8")).hexdigest()
 
     def get_address(self):
         return self.__address
@@ -71,7 +71,6 @@ class Account:
 
     def get_bvn(self):
         return self.__bvn
-
 
 
     def get_balance(self):
