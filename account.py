@@ -106,4 +106,12 @@ class Account:
         self.__balance += amount
         return self.__balance
 
+    def transfer(self, amount: float,) -> float:
+        assert type(amount) == float, "Amount to transfer must be a number"
+        assert amount > 0, "Amount must be a positive number"
+        assert amount < self.__balance, "Insufficient funds"
+
+        self.balance -= amount
+
+
 
