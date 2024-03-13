@@ -2,6 +2,7 @@ import _md5
 import hashlib
 from time import time
 import random
+from db import customer_db
 
 class Account:
 
@@ -90,11 +91,16 @@ class Account:
 
 
     def withdraw(self, amount: float) -> float:
-        assert type(amount) == float, "Amount to withdraw must be a number"
+        assert type(amount) == float, "Amount must be a number"
         assert amount > 0, "Amount must be a positive number"
-        assert amount < self.__balance, "Insufficient funds"
+        assert amount <= self.__balance, "Insufficient funds"
 
         self.__balance -= amount
+        print(f"""
+        Debit:
+        Withdrawn N{amount} succesfully!
+        New Balance: N{self.__balance}    
+    """)
         return self.__balance
 
 
@@ -103,14 +109,21 @@ class Account:
         assert amount > 0, "Amount must be a positive number"
 
         self.__balance += amount
+        print(f"""
+        Credit
+        Deposited N{amount}
+        New Balance: N{self.__balance}
+""")
         return self.__balance
 
-    def transfer(self, amount: float,) -> float:
-        assert type(amount) == float, "Amount to transfer must be a number"
-        assert amount > 0, "Amount must be a positive number"
-        assert amount < self.__balance, "Insufficient funds"
+    def transfer(self, amount: float, acc_no: str):
+        beneficiary: Account = customer_db.get(acc_no, None)
+        assert beneficiary is not None, "404 User does not exist"
 
-        self.balance -= amount
+        self.withdraw(amount)
+        beneficiary.deposit(amount)
+        return self.__balance
+
 
 
 
