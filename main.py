@@ -1,4 +1,7 @@
 from tools import register
+from tools import  login
+import initdb
+
 while True:
     user_response = input("""
                 Welcome user, what would you like to do today?
@@ -8,10 +11,9 @@ while True:
         """)
 
     if user_response == '1':
-        print('You entered the register Option')
         register()
     elif user_response == '2':
-        print('You entered the Login Option')
+        login()
     elif user_response == '3':
         print ('Bye Bye')
         break
