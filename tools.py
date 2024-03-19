@@ -6,6 +6,15 @@ def register():
     while True:
         try:
             print("REGISTRATION\n\n")
+
+            response = input('''
+            Hello, you are about to register for a Hiit bank Account
+            Enter y to continue or q to quit
+            ''')
+
+            assert response == 'y' or response == 'q', 'Invalid Input'
+            if response == 'q': return
+
             bvn_response = input("Please enter your BVN or leave blank if you do not have one: ")
             if len(bvn_response) == 0:
                 acc = Account()
@@ -38,7 +47,7 @@ def register():
 pass
 
 
-def login():
+def login() -> Account:
     while True:
         try:
             email = input("Email address: ")
@@ -56,10 +65,73 @@ def login():
             assert passcode == user_account.get_passcode(), "Invalid Passcode Provided"
 
             print("LOGIN SUCCESSFUL!")
-
+            return user_account
 
         except AssertionError as e:
-            print("Assertion Error: " + str(e))
+            print(f"Assertion Error: {e}")
         except Exception as ex:
-            print(" Exception: " + str(e))
-pass
+            print(f"Other Exception: {ex}")
+
+
+def deposit(user: Account):
+    while True:
+        try:
+            response = input('''
+            
+            How much would you like to deposit:
+            Enter q to quit
+            ''')
+
+            if response == 'q': return
+
+            assert response.isnumeric(), "Invalid input only numbers allowed"
+            amount = float(response)
+            user.deposit(amount)
+            return
+
+        except AssertionError as e:
+            print(f"Assertion Error: {e}")
+        except Exception as ex:
+            print(f"Other Exception: {ex}")
+
+    pass
+
+def withraw(user: Account):
+    while True:
+        try:
+            response = input('''
+
+            How much would you like to withdraw:
+            Enter q to quit
+            ''')
+
+            if response == 'q': return
+
+            assert response.isnumeric(), "Invalid input only numbers allowed"
+            amount = float(response)
+            user.withdraw(amount)
+            return
+
+        except AssertionError as e:
+            print(f"Assertion Error: {e}")
+        except Exception as ex:
+            print(f"Other Exception: {ex}")
+
+
+    pass
+
+
+def balance(user: Account):
+    print(f'''
+    Balance:  N{user.get_balance()}
+    ''')
+
+def account_no(user: Account):
+    print(f'''
+    Account No: {user.get_account_no()}
+    ''')
+
+def bvn_in(user: Account):
+    print(f'''
+    Bvn:  {user.get_bvn()}
+    ''')
