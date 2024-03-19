@@ -139,8 +139,7 @@ class Account:
 """)
         return self.__balance
 
-    def transfer(self, amount: float, acc_no: str):
-        beneficiary: Account = customer_db.get(acc_no, None)
+    def transfer(self, amount: float, beneficiary):
         assert beneficiary is not None, "404 User does not exist"
 
         self.withdraw(amount)

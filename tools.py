@@ -120,6 +120,65 @@ def withraw(user: Account):
 
     pass
 
+def transfer(user: Account):
+    while True:
+        try:
+            response = input('''
+            
+            You are about to perform a transfer.
+            Enter y to continue or q to quit
+            ''')
+            assert response == 'y' or response == 'q', "Invalid Input"
+            if response == 'q': return
+
+
+            user_accounts = []
+            while len(user_accounts) == 0:
+                beneficiary_acc_no = input('''
+                
+                Enter beneficiary account number:
+                ''')
+
+                if re.search('^[0-9]{10}$', beneficiary_acc_no) is None:
+                    print('Invalid Account number format')
+                    continue
+
+                if beneficiary_acc_no == user.get_account_no():
+                    print('Cannot initiate transfer to your own account')
+                    continue
+
+                user_accounts = [account for account in customer_db.values() if account.get_account_no() == beneficiary_acc_no]
+                if len(user_accounts) == 0:
+                    print("Beneficiary account number not found ")
+
+                beneficiary = user_accounts[0]
+                print(f'''
+                
+                Transfer of funds to {beneficiary.get_fname()} {beneficiary.get_lname()}
+                ''')
+
+                amount = ''
+                while amount.isnumeric() is False:
+                    amount = input('How much would you like to transfer')
+                    if response.isnumeric() is False:
+                        print("Invalid input only numbers allowed")
+                        continue
+
+                amount = float(amount)
+
+                user.transfer(amount, beneficiary)
+                print('''
+                
+                TRANSFER SUCCESSFUL!
+                ''')
+                return
+
+
+        except AssertionError as e:
+            print(f"Assertion Error: {e}")
+        except Exception as ex:
+            print(f"Other Exception: {ex}")
+
 
 def balance(user: Account):
     print(f'''
